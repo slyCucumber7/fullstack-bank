@@ -8,6 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
+
+import java.net.URI;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,13 +30,6 @@ class WebServerApplicationTests {
         ResponseEntity<String> response = restTemplate
                 .getForEntity("/users/67",String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-//
-//        DocumentContext documentContext = JsonPath.parse(response.getBody());
-//        Number id = documentContext.read("$.id");
-//        assertThat(id).isEqualTo(jonDoe.id());
-//
-//        Double balance = documentContext.read("$.balance");
-//        assertThat(balance).isEqualTo(jonDoe.balance());
     }
 
     @Test
@@ -50,7 +46,30 @@ class WebServerApplicationTests {
 
     }
 
+    @Test
+    @DirtiesContext
+    void shouldCreateANewUser(){
+        BankCustomer newUser = new BankCustomer(0, 250.32);
+        ResponseEntity<Void> response = restTemplate
+                .postForEntity("/users",newUser,Void.class);
 
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+    URI userLocation = response.getHeaders().getLocation();
+    ResponseEntity<String> getResponse = restTemplate
+            .getForEntity(userLocation,String.class);
+    assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+    DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
+    Number id = documentContext.read("$.id");
+    Double balance = documentContext.read("$.balance");
+
+    assertThat(id).isNotNull();
+    assertThat(balance).isEqualTo(newUser.balance);
+
+    }
+
+    
 
 
 }

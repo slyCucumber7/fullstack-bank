@@ -2,7 +2,9 @@ package com.github.slycucumber7.web_server;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Optional;
 
 
@@ -34,6 +36,16 @@ class WebController {
             return ResponseEntity.notFound().build();
         }
 
+    }
+
+    @PostMapping
+    private ResponseEntity<Void> addNewCustomer(@RequestBody BankCustomer newUser, UriComponentsBuilder ucb){
+        BankCustomer savedCustomer = repository.save(newUser);
+        URI location = ucb
+                .path("/users/{id}")
+                .buildAndExpand(savedCustomer.id)
+                .toUri();
+        return ResponseEntity.created(location).build();
     }
 
 }
