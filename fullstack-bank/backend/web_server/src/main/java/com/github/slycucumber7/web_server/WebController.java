@@ -61,6 +61,18 @@ class WebController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @DeleteMapping("/{requestedId}")
+    private ResponseEntity<Void> removeCustomer(@PathVariable Long requestedId){
+        Optional<BankCustomer> optionalBankCustomer = repository.findById(requestedId);
+        if(optionalBankCustomer.isPresent()){
+            repository.delete(optionalBankCustomer.get());
+            return  ResponseEntity.noContent().build();
+        }
+        else{
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
 
 

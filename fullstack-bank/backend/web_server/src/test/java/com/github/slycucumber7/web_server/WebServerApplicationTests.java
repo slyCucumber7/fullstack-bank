@@ -101,6 +101,19 @@ class WebServerApplicationTests {
 
     }
 
+    @Test
+    @DirtiesContext
+    void shouldDeleteUser(){
+        ResponseEntity<Void> response = restTemplate.
+                exchange("/users/99",HttpMethod.DELETE,null,void.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+
+        ResponseEntity<String> getResponse = restTemplate
+                .getForEntity("/users/99",String.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+
+    }
+
 
 
 
