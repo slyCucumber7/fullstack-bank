@@ -48,6 +48,19 @@ class WebController {
         return ResponseEntity.created(location).build();
     }
 
+    @PatchMapping("/{requestedId}")
+    private ResponseEntity<BankCustomer> updateCustomer(@PathVariable Long requestedId, @RequestBody BankCustomer userUpdate){
+        Optional<BankCustomer> optionalBankCustomer = repository.findById(requestedId);
+        if(optionalBankCustomer.isPresent()){
+            //
+            repository.updateBalance(requestedId, userUpdate.balance);
+            // line above is throwing a 500 server error
+            return ResponseEntity.ok(userUpdate);
+        }
+        else{
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
 
 
