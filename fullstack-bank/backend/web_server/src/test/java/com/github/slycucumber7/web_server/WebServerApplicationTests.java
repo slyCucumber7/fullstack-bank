@@ -30,6 +30,7 @@ class WebServerApplicationTests {
     @Test
     void invalidIdShouldReturnNotFound(){
         ResponseEntity<String> response = restTemplate
+                .withBasicAuth("bob1","abc")
                 .getForEntity("/users/67",String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
@@ -37,6 +38,7 @@ class WebServerApplicationTests {
     @Test
     void validIdShouldReturnUser(){
         ResponseEntity<String> response = restTemplate
+                .withBasicAuth("bob1","abc")
                 .getForEntity("/users/99",String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
@@ -53,12 +55,14 @@ class WebServerApplicationTests {
     void shouldCreateANewUser(){
         BankCustomer newUser = new BankCustomer(0, 250.32);
         ResponseEntity<Void> response = restTemplate
+                .withBasicAuth("bob1","abc")
                 .postForEntity("/users",newUser,Void.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
     URI userLocation = response.getHeaders().getLocation();
     ResponseEntity<String> getResponse = restTemplate
+            .withBasicAuth("bob1","abc")
             .getForEntity(userLocation,String.class);
     assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
@@ -82,6 +86,7 @@ class WebServerApplicationTests {
         BankCustomer updatedUser = new BankCustomer(99,99.13);
         HttpEntity<BankCustomer> request = new HttpEntity<>(updatedUser);
         ResponseEntity<String> response = restTemplate
+                .withBasicAuth("bob1","abc")
                 .exchange("/users/99", HttpMethod.PATCH,request,String.class);
 
         //Testing the PATCH response
@@ -94,6 +99,7 @@ class WebServerApplicationTests {
 
         //Checking the updated resource with a GET request
         ResponseEntity<String> getResponse = restTemplate
+                .withBasicAuth("bob1","abc")
                 .getForEntity("/users/99",String.class);
         DocumentContext getContext = JsonPath.parse(getResponse.getBody());
         Double getResponseBalance = getContext.read("$.balance");
@@ -104,11 +110,13 @@ class WebServerApplicationTests {
     @Test
     @DirtiesContext
     void shouldDeleteUser(){
-        ResponseEntity<Void> response = restTemplate.
-                exchange("/users/99",HttpMethod.DELETE,null,void.class);
+        ResponseEntity<Void> response = restTemplate
+                .withBasicAuth("bob1","abc")
+                .exchange("/users/99",HttpMethod.DELETE,null,void.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 
         ResponseEntity<String> getResponse = restTemplate
+                .withBasicAuth("bob1","abc")
                 .getForEntity("/users/99",String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
