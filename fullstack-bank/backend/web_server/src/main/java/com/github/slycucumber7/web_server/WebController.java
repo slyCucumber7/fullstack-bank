@@ -1,30 +1,28 @@
 package com.github.slycucumber7.web_server;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
-
+@CrossOrigin()
 @RestController
 @RequestMapping("/users")
 class WebController {
-
     /*
     See:
     HTTPStatusEntryPoint
      */
-
-
-
-
     private final Repository repository;
-
     private WebController(Repository repository){
         this.repository = repository;
     }
+
 
     @GetMapping("/{requestedId}")
     private ResponseEntity<BankCustomer> findById(@PathVariable Long requestedId){
@@ -44,7 +42,11 @@ class WebController {
                 .path("/users/{id}")
                 .buildAndExpand(savedCustomer.id)
                 .toUri();
-        return ResponseEntity.created(location).build();
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setLocation(location);
+        //This exists to prevent the browser's CORS protocol form hiding the location header from us.
+        responseHeaders.set("Access-Control-Expose-Headers","Location");
+        return new ResponseEntity<Void>(responseHeaders, HttpStatus.CREATED);
     }
 
     @PatchMapping("/{requestedId}")
