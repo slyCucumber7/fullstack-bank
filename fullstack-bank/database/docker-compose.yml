@@ -1,0 +1,16 @@
+
+services:
+  db:
+    image: postgres:18  # docker image (PostgreSQL database ver. 18)
+    restart: always # Always restarts the container if it stops
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}  # database password
+    ports:
+      - "5432:5432" # default postgres port
+    volumes:
+      - postgres-data-volume:/var/lib/postgresql
+        # volume name: container path
+      #/var/lib/postgresql is where postgres saves its data
+
+volumes:  # Tells docker to create and manage the volume
+  postgres-data-volume:
