@@ -12,7 +12,7 @@ public class BankUserService {
         return repository.getUserById(id);
     }
 
-    public BankUserDto createNewBankUser(BankUserCreationRequest request){
+    public BankUserDto createNewBankUser(BankUserRequest request){
         BankUser newUser = BankUser.builder()
                 .id(null)
                 .nameF(request.getNameF())
@@ -31,7 +31,51 @@ public class BankUserService {
             System.out.println("Failed to create new entity.");
         }
         return new BankUserDto(result);
+    }
 
+    public BankUserDto updateBankUser(BankUserRequest request, Long id){
+        BankUser user = repository.findBankUserById(id);
+        if(user != null) {
+            if (request.getNameF() != null && !request.getNameF().isBlank()) {
+                user.setNameF(request.getNameF());
+            }
+            if (request.getNameM() != null ) {
+                user.setNameM(request.getNameM());
+            }
+            if (request.getNameL() != null && !request.getNameL().isBlank()) {
+                user.setNameL(request.getNameL());
+            }
+            if (request.getAddrStreet() != null && !request.getAddrStreet().isBlank()) {
+                user.setAddrStreet(request.getAddrStreet());
+            }
+            if (request.getAddrCity() != null && !request.getAddrCity().isBlank()) {
+                user.setAddrCity(request.getAddrCity());
+            }
+            if (request.getAddrSt() != null && !request.getAddrSt().isBlank()) {
+                user.setAddrSt(request.getAddrSt());
+            }
+            if (request.getAddrZip() != null && !request.getAddrZip().isBlank()) {
+                user.setAddrZip(request.getAddrZip());
+            }
+            if (request.getPhone() != null && !request.getPhone().isBlank()) {
+                user.setPhone(request.getPhone());
+            }
+            if (request.getEmail() != null && !request.getEmail().isBlank()) {
+                user.setEmail(request.getEmail());
+            }
+//        if(request.getPassword() != null && Validator.isValidPassword(request.getPassword)){
+//            !--UPDATE PASSWORD HASH--!
+//        }
+        /*
+            TODO: Implement password update logic once Spring Security is implemented
+         */
+            BankUserDto results = new BankUserDto(repository.save(user));
+            return results;
+        }   //if user for id not null
+        return null;
+        /*
+            TODO: Throw not found exception if user not found; Handle in global exception handler.
+         */
     }
 
 

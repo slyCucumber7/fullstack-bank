@@ -32,13 +32,13 @@ public class BankUserController {
     }
 
     @PostMapping("users")
-    public ResponseEntity<ResponseWrapper<BankUserDto>> createNewUser(@RequestBody BankUserCreationRequest request){
+    public ResponseEntity<ResponseWrapper<BankUserDto>> createNewUser(@RequestBody BankUserRequest request){
         var results = bankUserService.createNewBankUser(request);
         if(results != null){
             var response = ResponseEntity.ok(ResponseWrapper.<BankUserDto>builder()
                     .status("200")
-                    .message("success")
-                    .description("succ")
+                    .message("OK")
+                    .description("Successfully created new user with id: " + results.getId())
                     .content(results)
                     .build());
             return response;
@@ -48,7 +48,26 @@ public class BankUserController {
             return ResponseEntity.ok(ResponseWrapper.<BankUserDto>builder().status("400").message("bad request").description("failed to create new entity").content(null).build());
         }
     }
+    @PatchMapping("users/{userId}")
+    public ResponseEntity<ResponseWrapper<BankUserDto>> updateUser(@RequestBody BankUserRequest request, @PathVariable Long userId){
+    var results = bankUserService.updateBankUser(request, userId);
+        if(results != null){
+            var response = ResponseEntity.ok(ResponseWrapper.<BankUserDto>builder()
+                    .status("200")
+                    .message("OK")
+                    .description("Successfully updated user with id: " + results.getId())
+                    .content(results)
+                    .build());
+            return response;
+        }
+        else{
+            System.out.println("Error: Failed to create new entity");
+            return ResponseEntity.ok(ResponseWrapper.<BankUserDto>builder().status("400").message("bad request").description("failed to create new entity").content(null).build());
+        }
+  }
+//
 
 
 
-}
+
+   }

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
-public class BankUserCreationRequest {
+public class BankUserRequest {
     @NotNull
     @Size(max = 30)
     String nameF;

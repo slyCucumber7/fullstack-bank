@@ -15,4 +15,5 @@ public interface BankUserRepository extends JpaRepository<BankUser, Long> {
         """)
     public BankUserDto getUserById(Long id);
 
+    public BankUser findBankUserById(Long id);
 }

@@ -115,7 +115,6 @@ paths:
                     example: "Failed to create new user. Please double-check parameters."
                   content:
                     type: object
-
   /users/{userId}:
     get:
       description: Retrieves user information for requested user, given a valid user id.
@@ -194,3 +193,115 @@ paths:
                     example: desc
                   content:
                     type: object
+    patch:
+     description: Updates bank user info, given replacement data and a valid user id.
+     parameters:
+       - in: path
+         name: userId
+         required: true
+         description: The id of the user to be updated.
+       - in: body
+         name: UserData
+         required: true
+         description: The bank user attributes to be updated, and their new values. Attributes with null values will not be updated.
+         schema:
+           type: object
+           properties:
+             nameF:
+               type: string
+               example: Josh
+             nameM:
+               type: string
+               example: Jack
+             nameL:
+               type: string
+               example: Smith
+             addrStreet:
+               type: string
+               example: 123 Example Street
+             addrCity:
+               type: string
+               example: Chicago
+             addrSt:
+               type: string
+               example: IL
+             addrZip:
+               type: string
+               example: 61620
+             phone:
+               type: string
+               example: 102-222-2222
+             email:
+               type: string
+               example: JJSmit@Gmail.com
+             password:
+               type: string
+               example: null
+     responses:
+       "200":
+         description: Successful response
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 status:
+                   type: int
+                   example: 200
+                 message:
+                   type: string
+                   example: "OK"
+                 description:
+                   type: string
+                   example: "Successfully updated user with id: 1"
+                 content:
+                   type: object
+                   properties:
+                     id:
+                       type: long
+                       example: 1
+                     firstName:
+                       type: string
+                       example: "John"
+                     middleName:
+                       type: string
+                       example: "Jones"
+                     lastName:
+                       type: string
+                       example: "Smith"
+                     addressCity:
+                       type: string
+                       example: "Chicago"
+                     addressState:
+                       type: string
+                       example: "IL"
+                     addressZip:
+                       type: string
+                       example: "61620"
+                     phone:
+                       type: string
+                       example: "303-333-3333"
+                     email:
+                       type: string
+                       example: "johnjsmith@gmail.com"
+                     accountCreation:
+                       type: string
+                       example: "2026-05-03 01:18:46.531528 +00:00"
+       "400":
+         description: Bad request
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 status:
+                   type: int
+                   example: 400
+                 message:
+                   type: string
+                   example: "Bad request"
+                 description:
+                   type: string
+                   example: "Failed to update user. Please double-check parameters."
+                 content:
+                   type: object
