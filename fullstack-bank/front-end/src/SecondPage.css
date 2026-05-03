@@ -1,0 +1,12 @@
+.second-part-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center; 
+    height: 100vh;
+    padding: 40vh;
+    text-align: center;
+
+   
+    height: 100vh;
+}
