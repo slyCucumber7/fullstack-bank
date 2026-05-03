@@ -3,11 +3,12 @@ package com.example.userservice.BankUser;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-
+@EqualsAndHashCode
 @AllArgsConstructor
 @Getter
 public class BankUserDto implements Serializable {
