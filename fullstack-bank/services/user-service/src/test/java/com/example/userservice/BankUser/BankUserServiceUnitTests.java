@@ -1,5 +1,6 @@
 package com.example.userservice.BankUser;
 
+import com.example.userservice.common.exception.NotFoundException;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -8,15 +9,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("BankUserService Unit Tests")
-class BankUserServiceTest {
+class BankUserServiceUnitTests {
 
     @Mock   //tells mockito we want to mock this dependency
     private BankUserRepository bankUserRepository;  //mocked dependency
@@ -62,6 +62,7 @@ class BankUserServiceTest {
                 .build();
 
         bankUserDto = new BankUserDto(bankUser);
+
     }
 
 
@@ -73,20 +74,29 @@ class BankUserServiceTest {
         @DisplayName("Should return a user when given a valid user id")
         void shouldGetUserFromId(){
             // Given
-            //...
+            when(bankUserRepository.getUserById(any(Long.class))).thenReturn(bankUserDto);
             // When
             final BankUserDto result = bankUserService.getUserFromId(userId);
-
             // Then
+            //assert result not null
             assertNotNull(result);
-
+            //assert result dto fields equal to expected
+            assertThat(result)
+                    .usingRecursiveComparison()
+                    .isEqualTo(bankUserDto);
+            //assert mock repo findUserById() called once with argument
+            verify(bankUserRepository, times(1)).getUserById(userId);
         }
 
         @Test
-        @Disabled
-        @DisplayName("Test name 2")
-        void doSomething(){
-
+        @DisplayName("Should throw NotFoundException with message when user not found by repository")
+        void shouldThrowNotFoundException(){
+            // Given
+            when(bankUserRepository.getUserById(any(Long.class))).thenReturn(null);
+            // When / then
+            assertThatThrownBy(() -> bankUserService.getUserFromId(userId))
+                    .isInstanceOf(NotFoundException.class)
+                    .hasMessage("User with id: " + userId + " not found.");
         }
     }
 
@@ -131,6 +141,37 @@ class BankUserServiceTest {
     @DisplayName("Update Bank User Tests")
     class UpdateBankUserTests {
 
+        @Captor
+        private ArgumentCaptor<BankUser> bankUserArgumentCaptor;
+
+        @Test
+        @DisplayName("Should update user when provided valid user request")
+        void shouldUpdateUser(){
+            //Given
+            //----------
+            when(bankUserRepository.findBankUserById(any(Long.class))).thenReturn(bankUser);
+            when(bankUserRepository.save(any(BankUser.class))).thenReturn(bankUser);
+            //When
+            //----------
+            final BankUserDto result = bankUserService.updateBankUser(bankUserRequest, userId);
+            //Then
+            //----------
+            //Assert: results not null
+            assertNotNull(result);
+            //Assert: result BankUserDto values match expected
+            assertThat(result)
+                    .usingRecursiveComparison()
+                    .isEqualTo(bankUserDto);
+            //Assert: bankUserRepository.getUserById() called once with expected argument
+            verify(bankUserRepository, times(1)).findBankUserById(userId);
+            //Assert: bankUserRepository.save() called once, capture argument
+            verify(bankUserRepository, times(1)).save(bankUserArgumentCaptor.capture());
+            //Assert: bankUserRepository.save() argument matches expected
+            assertThat(bankUserArgumentCaptor.getValue())
+                    .usingRecursiveComparison()
+                    .ignoringFields("id", "creationTs")
+                    .isEqualTo(bankUser);
+        }
 
     }
 
