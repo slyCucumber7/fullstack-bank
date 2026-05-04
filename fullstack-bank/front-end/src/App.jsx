@@ -1,8 +1,8 @@
 import "./App.css";
-import Navbar from "./Navbar";
-import IntroPage from "./IntroPage";
-import SecondPartPage from "./SecondPage";
-import SignUpPage from "./SignUpPage";
+import Navbar from "./components/NavBar/Navbar";
+import IntroPage from "./pages/HomePage/IntroPage";
+import SecondPartPage from "./pages/HomePage/SecondPage";
+import SignUpPage from "./pages/Auth/SignUpPage";
 import { useState } from "react";
 function App() {
   const [view, setView] = useState("home");
@@ -20,7 +20,6 @@ function App() {
           <SecondPartPage />
         </>
       )}
-      {view === "signup" && <SignUpPage />}
       {view === "signup" && <SignUpPage />}
     </div>
   );
