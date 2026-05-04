@@ -19,17 +19,20 @@ public class BankUserService {
     }
 
     public BankUserDto createNewBankUser(BankUserRequest request){
+
+        RequestValidator.validateUserCreationRequest(request);
+
         BankUser newUser = BankUser.builder()
                 .id(null)
-                .nameF(request.getNameF())
-                .nameM(request.getNameM())
-                .nameL(request.getNameL())
-                .addrStreet(request.getAddrStreet())
-                .addrCity(request.getAddrCity())
-                .addrSt(request.getAddrSt())
-                .addrZip(request.getAddrZip())
-                .phone(request.getPhone())
-                .email(request.getEmail())
+                .nameF(request.getNameF().trim())
+                .nameM(request.getNameM().trim())
+                .nameL(request.getNameL().trim())
+                .addrStreet(request.getAddrStreet().trim())
+                .addrCity(request.getAddrCity().trim())
+                .addrSt(request.getAddrSt().trim())
+                .addrZip(request.getAddrZip().trim())
+                .phone(request.getPhone().trim())
+                .email(request.getEmail().trim())
                 .creationTs(null)
                 .build();
         var result = repository.save(newUser);
