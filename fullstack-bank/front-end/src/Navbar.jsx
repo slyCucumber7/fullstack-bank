@@ -1,6 +1,6 @@
 import './Navbar.css';
 
-function Navbar() {
+function Navbar({ onSignUpClick, onHomeClick }) {
     return (
         <nav className="nav-container">
             <div className="nav-links-left">
@@ -11,11 +11,11 @@ function Navbar() {
             </div>
 
             <div className="nav-center">
-                <strong>Bank Name</strong>
+                <button onClick={onHomeClick}><strong>Bank Name</strong></button>
             </div>
 
             <div className="nav-links-right">
-                <a href="/">Log In</a>
+                <button onClick={onSignUpClick} className="nav-button">Sign Up</button>
                 <a href="/">Sign Up</a>
             </div>
         </nav>
