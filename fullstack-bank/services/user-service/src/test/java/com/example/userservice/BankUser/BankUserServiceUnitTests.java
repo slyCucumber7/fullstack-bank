@@ -1,6 +1,7 @@
 package com.example.userservice.BankUser;
 
 import com.example.userservice.common.exception.NotFoundException;
+import com.example.userservice.entity.BankUser;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

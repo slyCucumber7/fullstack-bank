@@ -2,6 +2,7 @@ package com.example.userservice.BankUser;
 
 import com.example.userservice.common.exception.BadRequestException;
 import com.example.userservice.common.exception.NotFoundException;
+import com.example.userservice.entity.BankUser;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

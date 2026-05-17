@@ -1,14 +1,12 @@
-package com.example.userservice.BankUser;
+package com.example.userservice.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.Generated;
-import org.hibernate.boot.jaxb.mapping.GenerationTiming;
 import org.hibernate.generator.EventType;
 
 import java.time.OffsetDateTime;

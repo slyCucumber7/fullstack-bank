@@ -1,5 +1,6 @@
 package com.example.userservice.BankUser;
 
+import com.example.userservice.entity.BankUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
