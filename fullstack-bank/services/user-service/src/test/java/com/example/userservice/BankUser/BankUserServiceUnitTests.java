@@ -172,7 +172,6 @@ class BankUserServiceUnitTests {
                     .ignoringFields("id", "creationTs")
                     .isEqualTo(bankUser);
         }
-
     }
 
 
