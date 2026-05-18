@@ -1,16 +1,20 @@
 package com.example.userservice.userLogin;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.example.userservice.common.ResponseWrapper;
+import com.example.userservice.common.exception.FailedLoginException;
+import com.example.userservice.common.exception.NotFoundException;
 import com.example.userservice.entity.UserLogin;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import java.time.Instant;
+import java.util.Date;
 
 @AllArgsConstructor
 @RestController
@@ -25,12 +29,7 @@ public class SignOrLogInController {
         UserLogin userLogin = userLoginService.findById(request.userId());
 
         if (userLogin == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ResponseWrapper.<UserLogin>builder()
-                            .status("404")
-                            .message("not found")
-                            .description("Twin you inputted nothing, not found")
-                            .build());
+            throw new NotFoundException("User could not be found.");
         }
 
         userLoginService.hashPassword(request.userId(), request.password());
@@ -43,26 +42,44 @@ public class SignOrLogInController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseWrapper<UserLogin>> login (@RequestBody SignUpOrLogInRequest request) {
-        UserLogin userLogin = userLoginService.findById(request.userId());
+    public ResponseEntity<ResponseWrapper<JwtResponse>> login (@RequestBody SignUpOrLogInRequest request) {
 
+        UserLogin userLogin = userLoginService.findById(request.userId());
         if (userLogin == null) {
-            ResponseEntity.status(HttpStatus.NOT_FOUND).body(ResponseWrapper.<UserLogin>builder());
+            throw new NotFoundException("User could not be found.");
         }
 
         boolean verify = userLoginService.verifyPassword(request.password(), userLogin);
 
         if (verify) {
+            // JWT Token Generator using Auth0 JWT
+            Algorithm algo = Algorithm.HMAC256("mikubeam");
 
-            return ResponseEntity.ok(ResponseWrapper.<UserLogin>builder()
-                    .status("200")
-                    .message("User authenticated")
-                    .description("User inputted correct password")
-                    .build());
+            JWTVerifier token = JWT.require(algo)
+                    .withIssuer("Miku Bank Inc.")
+                    .build();
+
+            Instant now = Instant.now();
+            Instant expirationTime = now.plusSeconds(6700);
+
+            String jwtToken = JWT.create()
+                    .withIssuer("Miku Bank Inc.")
+                    .withSubject("User details")
+                    .withClaim("UserId", userLogin.getId())
+                    .withIssuedAt(Date.from(now))
+                    .withExpiresAt(Date.from(expirationTime))
+                    .sign(algo);
+
+            JwtResponse jwtResponse = JwtResponse.builder()
+                    .token(jwtToken)
+                    .id(userLogin.getId())
+                    .build();
+
+            ResponseWrapper<JwtResponse> ApiResponse = ResponseWrapper.<JwtResponse>builder().content(jwtResponse).build();
+
+            return ResponseEntity.ok(ApiResponse);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseWrapper.<UserLogin>builder().status("401")
-                    .message("User password input does not match")
-                    .build());
+           throw new FailedLoginException("Invalid login credentials.");
         }
     }
 

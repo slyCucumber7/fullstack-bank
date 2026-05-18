@@ -26,5 +26,10 @@ public class GlobalExceptionHandler {
         return buildResponse(ex, HttpStatus.NOT_FOUND, "Not Found", request);
     }
 
+    @ExceptionHandler(com.example.userservice.common.exception.FailedLoginException.class)
+    public ResponseEntity<ErrorResponse> handleFailedLogin(FailedLoginException ex, HttpServletRequest request){
+        return buildResponse(ex, HttpStatus.UNAUTHORIZED, "Unauthorized", request);
+    }
+
 
 }
