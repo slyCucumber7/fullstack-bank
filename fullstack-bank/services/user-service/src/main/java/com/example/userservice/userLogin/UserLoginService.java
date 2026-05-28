@@ -1,7 +1,5 @@
 package com.example.userservice.userLogin;
 
-import com.example.userservice.BankUser.BankUserDto;
-import com.example.userservice.entity.BankUser;
 import com.example.userservice.entity.UserLogin;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,17 +11,16 @@ public class UserLoginService {
     private PasswordEncoder passwordEncoder;
     private UserLoginRepository userLoginRepository;
 
+    public void saveUserLogin(UserLogin userLogin) {
+        userLoginRepository.save(userLogin);
+    }
+
     public UserLogin findById(Long id) {
         return userLoginRepository.findById(id).orElse(null);
     }
 
-    public void hashPassword(Long id, String rawPassword) {
-        String hashedPassword = passwordEncoder.encode(rawPassword);
-        UserLogin user = findById(id);
-
-        user.setHash(hashedPassword);
-
-        userLoginRepository.save(user);
+    public String hashPassword(String rawPassword) {
+        return passwordEncoder.encode(rawPassword);
     }
 
     public boolean verifyPassword(String rawPassword, UserLogin userLogin) {

@@ -2,6 +2,12 @@ package com.example.userservice.BankUser;
 
 import com.example.userservice.common.ResponseWrapper;
 import com.example.userservice.common.exception.ErrorResponse;
+import com.example.userservice.entity.BankUser;
+import com.example.userservice.entity.UserLogin;
+import com.example.userservice.userLogin.SignOrLogInController;
+import com.example.userservice.userLogin.SignUpOrLogInRequest;
+import com.example.userservice.userLogin.UserLoginRepository;
+import com.example.userservice.userLogin.UserLoginService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class BankUserController {
 
     private final BankUserService bankUserService;
+    private final UserLoginService userLoginService;
 
     @GetMapping("users/{userId}")
 //    @Operation(
@@ -61,13 +68,25 @@ public class BankUserController {
 //    )
     public ResponseEntity<ResponseWrapper<BankUserDto>> createNewUser(@RequestBody BankUserRequest request){
         var results = bankUserService.createNewBankUser(request);
+
         if(results != null){
+            BankUser getUser = bankUserService.getUserById(results.getId());
+
+            if(getUser != null){
+                UserLogin userLogin = new UserLogin();
+                userLogin.setBankUser(getUser);
+                userLogin.setHash(userLoginService.hashPassword(request.getPassword()));
+
+                userLoginService.saveUserLogin(userLogin);
+            }
             var response = ResponseEntity.ok(ResponseWrapper.<BankUserDto>builder()
                     .status("200")
                     .message("OK")
                     .description("Successfully created new user with id: " + results.getId())
                     .content(results)
                     .build());
+
+
             return response;
         }
         else{
@@ -75,6 +94,7 @@ public class BankUserController {
             return ResponseEntity.ok(ResponseWrapper.<BankUserDto>builder().status("400").message("bad request").description("failed to create new entity").content(null).build());
         }
     }
+
     @PatchMapping("users/{userId}")
 //    @Operation(
 //            summary = "Updates bank user info",

@@ -1,9 +1,7 @@
 package com.example.userservice.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.example.userservice.userAccount.AccountType;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -30,7 +28,8 @@ public class UserAccount {
     @Size(max = 32)
     @NotNull
     @Column(name = "type", nullable = false, length = 32)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private AccountType type;
 
     @NotNull
     @ColumnDefault("0.00")

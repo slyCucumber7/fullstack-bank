@@ -19,6 +19,10 @@ public class BankUserService {
         return user;
     }
 
+    public BankUser getUserById(Long id){
+        return repository.findBankUserById(id);
+    }
+
     public BankUserDto createNewBankUser(BankUserRequest request){
 
         RequestValidator.validateUserCreationRequest(request);

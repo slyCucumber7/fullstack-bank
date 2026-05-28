@@ -3,13 +3,17 @@ package com.example.userservice.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
 @Table(name = "user_login")
+@NoArgsConstructor
 public class UserLogin {
     @Id
     @Column(name = "id", nullable = false)
