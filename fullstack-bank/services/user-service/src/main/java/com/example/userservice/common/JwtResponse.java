@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class JwtResponse extends HttpServletResponseWrapper {
+public class JwtResponse {
         private Long id;
         private JWTPayloadWrapper payloadWrapper;
 }

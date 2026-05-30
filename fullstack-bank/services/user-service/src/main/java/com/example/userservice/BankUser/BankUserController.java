@@ -4,6 +4,7 @@ import com.example.userservice.common.ResponseWrapper;
 import com.example.userservice.common.exception.ErrorResponse;
 import com.example.userservice.entity.BankUser;
 import com.example.userservice.entity.UserLogin;
+import com.example.userservice.userAccount.UserAccountService;
 import com.example.userservice.userLogin.SignOrLogInController;
 import com.example.userservice.userLogin.SignUpOrLogInRequest;
 import com.example.userservice.userLogin.UserLoginRepository;
@@ -25,6 +26,7 @@ public class BankUserController {
 
     private final BankUserService bankUserService;
     private final UserLoginService userLoginService;
+    private final UserAccountService userAccountService;
 
     @GetMapping("users/{userId}")
 //    @Operation(
@@ -73,6 +75,10 @@ public class BankUserController {
             BankUser getUser = bankUserService.getUserById(results.getId());
 
             if(getUser != null){
+                // Creates User Account
+                userAccountService.createUserAccount(getUser);
+
+                // Creates User Login with its hashed password
                 UserLogin userLogin = new UserLogin();
                 userLogin.setBankUser(getUser);
                 userLogin.setHash(userLoginService.hashPassword(request.getPassword()));

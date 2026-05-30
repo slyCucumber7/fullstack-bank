@@ -1,11 +1,11 @@
 package com.example.userservice.entity;
 
 import com.example.userservice.userAccount.AccountType;
+import com.example.userservice.userAccount.UserAccountStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
@@ -15,6 +15,9 @@ import java.time.OffsetDateTime;
 @Setter
 @Entity
 @Table(name = "user_account")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserAccount {
     @Id
     @Column(name = "id", nullable = false)
@@ -24,6 +27,10 @@ public class UserAccount {
     @NotNull
     @Column(name = "name", nullable = false, length = 32)
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner")
+    private BankUser bankuser;
 
     @Size(max = 32)
     @NotNull
@@ -39,7 +46,8 @@ public class UserAccount {
     @Size(max = 32)
     @NotNull
     @Column(name = "status", nullable = false, length = 32)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private UserAccountStatus status;
 
     @NotNull
     @ColumnDefault("now()")
