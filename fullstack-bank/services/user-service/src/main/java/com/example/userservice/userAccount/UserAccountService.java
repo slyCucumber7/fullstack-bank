@@ -1,9 +1,10 @@
 package com.example.userservice.userAccount;
 
 
-import com.example.userservice.BankUser.BankUserRepository;
 import com.example.userservice.entity.BankUser;
 import com.example.userservice.entity.UserAccount;
+import com.example.userservice.userAccount.Enums.AccountType;
+import com.example.userservice.userAccount.Enums.UserAccountStatus;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,34 +22,37 @@ public class UserAccountService {
     @Transactional
     public void createUserAccount(BankUser user) {
         UserAccount checkingUserAccount = UserAccount.builder()
+                .id(null)
                 .name(user.getNameF() + " " + user.getNameL() + "'s Checking")
                 .bankuser(user)
                 .type(AccountType.CHECKING)
                 .balance(BigDecimal.ZERO)
                 .status(UserAccountStatus.ACTIVE)
-                .creationTs(OffsetDateTime.from(Instant.now()))
+                .creationTs(OffsetDateTime.ofInstant(Instant.now(), java.time.ZoneOffset.UTC))
                 .build();
 
          userAccountRepository.save(checkingUserAccount);
 
         UserAccount savingUserAccount = UserAccount.builder()
+                .id(null)
                 .name(user.getNameF() + " " + user.getNameL() + "'s Checking")
                 .bankuser(user)
                 .type(AccountType.SAVINGS)
                 .balance(BigDecimal.ZERO)
                 .status(UserAccountStatus.ACTIVE)
-                .creationTs(OffsetDateTime.from(Instant.now()))
+                .creationTs(OffsetDateTime.ofInstant(Instant.now(), java.time.ZoneOffset.UTC))
                 .build();
 
         userAccountRepository.save(savingUserAccount);
 
         UserAccount invesmentUserAccount = UserAccount.builder()
+                .id(null)
                 .name(user.getNameF() + " " + user.getNameL() + "'s Checking")
                 .bankuser(user)
                 .type(AccountType.INVESTMENT)
                 .balance(BigDecimal.ZERO)
                 .status(UserAccountStatus.ACTIVE)
-                .creationTs(OffsetDateTime.from(Instant.now()))
+                .creationTs(OffsetDateTime.ofInstant(Instant.now(), java.time.ZoneOffset.UTC))
                 .build();
 
         userAccountRepository.save(invesmentUserAccount);

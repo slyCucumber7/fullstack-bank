@@ -1,7 +1,7 @@
 package com.example.userservice.entity;
 
-import com.example.userservice.userAccount.AccountType;
-import com.example.userservice.userAccount.UserAccountStatus;
+import com.example.userservice.userAccount.Enums.AccountType;
+import com.example.userservice.userAccount.Enums.UserAccountStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -21,6 +21,7 @@ import java.time.OffsetDateTime;
 public class UserAccount {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Size(max = 32)
@@ -32,9 +33,8 @@ public class UserAccount {
     @JoinColumn(name = "owner")
     private BankUser bankuser;
 
-    @Size(max = 32)
     @NotNull
-    @Column(name = "type", nullable = false, length = 32)
+    @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private AccountType type;
 
@@ -43,9 +43,8 @@ public class UserAccount {
     @Column(name = "balance", nullable = false, precision = 12, scale = 2)
     private BigDecimal balance;
 
-    @Size(max = 32)
     @NotNull
-    @Column(name = "status", nullable = false, length = 32)
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private UserAccountStatus status;
 
