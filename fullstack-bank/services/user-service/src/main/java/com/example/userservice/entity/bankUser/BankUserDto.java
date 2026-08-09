@@ -1,4 +1,4 @@
-package com.example.userservice.BankUser;
+package com.example.userservice.entity.bankUser;
 
 import com.example.userservice.entity.BankUser;
 import jakarta.validation.constraints.NotNull;

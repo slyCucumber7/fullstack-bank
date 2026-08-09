@@ -1,10 +1,9 @@
-package com.example.userservice.userLogin;
+package com.example.userservice.entity.userLogin;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.userservice.BankUser.BankUserService;
 import com.example.userservice.common.JWTPayloadWrapper;
 import com.example.userservice.common.JwtResponse;
 import com.example.userservice.common.ResponseWrapper;

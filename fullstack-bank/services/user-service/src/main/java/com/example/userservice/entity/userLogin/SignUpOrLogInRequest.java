@@ -1,3 +1,3 @@
-package com.example.userservice.userLogin;
+package com.example.userservice.entity.userLogin;
 
 public record SignUpOrLogInRequest(Long userId, String password) { }

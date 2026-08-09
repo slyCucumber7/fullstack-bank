@@ -1,7 +1,7 @@
 package com.example.userservice.entity;
 
-import com.example.userservice.userAccount.Enums.AccountType;
-import com.example.userservice.userAccount.Enums.UserAccountStatus;
+import com.example.userservice.entity.userAccount.Enums.AccountType;
+import com.example.userservice.entity.userAccount.Enums.UserAccountStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

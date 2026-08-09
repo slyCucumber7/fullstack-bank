@@ -31,5 +31,10 @@ public class GlobalExceptionHandler {
         return buildResponse(ex, HttpStatus.UNAUTHORIZED, "Unauthorized", request);
     }
 
+    @ExceptionHandler(InsufficientFundsException.class)
+    public ResponseEntity<ErrorResponse> handleInsufficientFunds(InsufficientFundsException ex, HttpServletRequest request){
+        return buildResponse(ex, HttpStatus.UNPROCESSABLE_CONTENT, "Insufficient Funds", request);
+    }
+
 
 }

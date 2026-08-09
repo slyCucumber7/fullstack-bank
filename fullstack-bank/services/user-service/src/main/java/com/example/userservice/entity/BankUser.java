@@ -10,6 +10,9 @@ import org.hibernate.annotations.Generated;
 import org.hibernate.generator.EventType;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -59,7 +62,7 @@ public class BankUser {
     @Column(name = "addr_zip", nullable = false, length = 9)
     private String addrZip;
 
-    @Size(max = 15)
+    @Size(min = 10, max = 10, message = "Phone number must be exactly 10 digits")
     @NotNull
     @Column(name = "phone", nullable = false, length = 15)
     private String phone;
@@ -68,6 +71,9 @@ public class BankUser {
     @NotNull
     @Column(name = "email", nullable = false, length = 100)
     private String email;
+
+    @OneToMany(mappedBy = "bankuser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<UserAccount> userAccounts = new ArrayList<>();
 
 //    @NotNull
     @ColumnDefault("now()")

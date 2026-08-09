@@ -1,22 +1,12 @@
-package com.example.userservice.BankUser;
+package com.example.userservice.entity.bankUser;
 
 import com.example.userservice.common.ResponseWrapper;
-import com.example.userservice.common.exception.ErrorResponse;
 import com.example.userservice.entity.BankUser;
 import com.example.userservice.entity.UserLogin;
-import com.example.userservice.userAccount.UserAccountService;
-import com.example.userservice.userLogin.SignOrLogInController;
-import com.example.userservice.userLogin.SignUpOrLogInRequest;
-import com.example.userservice.userLogin.UserLoginRepository;
-import com.example.userservice.userLogin.UserLoginService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import com.example.userservice.entity.userAccount.UserAccountService;
+import com.example.userservice.entity.userLogin.UserLoginService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
@@ -84,6 +74,8 @@ public class BankUserController {
                 userLogin.setHash(userLoginService.hashPassword(request.getPassword()));
 
                 userLoginService.saveUserLogin(userLogin);
+
+
             }
             var response = ResponseEntity.ok(ResponseWrapper.<BankUserDto>builder()
                     .status("200")

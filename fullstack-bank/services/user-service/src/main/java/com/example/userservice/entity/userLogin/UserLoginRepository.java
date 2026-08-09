@@ -1,6 +1,5 @@
-package com.example.userservice.userLogin;
+package com.example.userservice.entity.userLogin;
 
-import com.example.userservice.BankUser.BankUserDto;
 import com.example.userservice.entity.UserLogin;
 import org.springframework.data.jpa.repository.JpaRepository;
 

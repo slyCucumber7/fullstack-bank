@@ -1,5 +1,6 @@
 package com.example.userservice.entity;
 
+import com.example.userservice.entity.accountTransaction.AccountTransactionType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -34,10 +35,10 @@ public class AccountTransaction {
     @Column(name = "amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
 
-    @Size(max = 32)
     @NotNull
-    @Column(name = "type", nullable = false, length = 32)
-    private String type;
+    @Column(name = "type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private AccountTransactionType type;
 
     @NotNull
     @ColumnDefault("now()")

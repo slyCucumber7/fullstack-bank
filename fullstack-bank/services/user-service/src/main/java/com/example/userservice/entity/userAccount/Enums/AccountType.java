@@ -1,4 +1,4 @@
-package com.example.userservice.userAccount.Enums;
+package com.example.userservice.entity.userAccount.Enums;
 
 public enum AccountType {
     CHECKING,

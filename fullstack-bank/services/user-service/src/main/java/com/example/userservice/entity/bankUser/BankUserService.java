@@ -1,4 +1,4 @@
-package com.example.userservice.BankUser;
+package com.example.userservice.entity.bankUser;
 
 import com.example.userservice.common.exception.BadRequestException;
 import com.example.userservice.common.exception.NotFoundException;
@@ -22,6 +22,10 @@ public class BankUserService {
     public BankUser getUserById(Long id){
         return repository.findBankUserById(id);
     }
+
+    public BankUser getUserByEmail(String email){ return repository.findBankUserByEmail(email); }
+
+    public BankUser getUserByPhone(String phone){ return repository.findBankUserByPhone(phone); }
 
     public BankUserDto createNewBankUser(BankUserRequest request){
 

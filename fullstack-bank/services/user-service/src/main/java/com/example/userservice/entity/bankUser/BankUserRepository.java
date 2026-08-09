@@ -1,4 +1,4 @@
-package com.example.userservice.BankUser;
+package com.example.userservice.entity.bankUser;
 
 import com.example.userservice.entity.BankUser;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,11 +10,15 @@ public interface BankUserRepository extends JpaRepository<BankUser, Long> {
 
     @Query(
         """
-        SELECT NEW com.example.userservice.BankUser.BankUserDto(u)
+        SELECT NEW com.example.userservice.entity.bankUser.BankUserDto(u)
         FROM BankUser u
         WHERE u.id = :id
         """)
     public BankUserDto getUserById(Long id);
 
     public BankUser findBankUserById(Long id);
+
+    BankUser findBankUserByEmail(String email);
+
+    BankUser findBankUserByPhone(String phone);
 }

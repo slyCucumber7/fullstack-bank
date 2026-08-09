@@ -1,10 +1,10 @@
-package com.example.userservice.userAccount;
+package com.example.userservice.entity.userAccount;
 
 
 import com.example.userservice.entity.BankUser;
 import com.example.userservice.entity.UserAccount;
-import com.example.userservice.userAccount.Enums.AccountType;
-import com.example.userservice.userAccount.Enums.UserAccountStatus;
+import com.example.userservice.entity.userAccount.Enums.AccountType;
+import com.example.userservice.entity.userAccount.Enums.UserAccountStatus;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -58,4 +58,6 @@ public class UserAccountService {
         userAccountRepository.save(invesmentUserAccount);
 
     }
+
+    public UserAccount findById(Long id) { return userAccountRepository.findById(id).orElse(null); }
 }
