@@ -1,15 +1,15 @@
 package com.example.userservice.entity;
 
-import com.example.userservice.entity.accountTransaction.AccountTransactionType;
+import com.example.userservice.entity.accountTransaction.enums.AccountTransactionType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -45,4 +45,7 @@ public class AccountTransaction {
     @Column(name = "creation_ts", nullable = false)
     private OffsetDateTime creationTs;
 
+    private String referenceNumber;
+
+    String referenceNumber = "MIKU-" + UUID.randomUUID().toString().substring(0,12).toUpperCase();
 }

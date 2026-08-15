@@ -10,6 +10,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -52,5 +53,4 @@ public class UserAccount {
     @ColumnDefault("now()")
     @Column(name = "creation_ts", nullable = false)
     private OffsetDateTime creationTs;
-
 }

@@ -1,4 +1,4 @@
-package com.example.userservice.entity.accountTransaction;
+package com.example.userservice.entity.accountTransaction.enums;
 
 public enum AccountTransactionType {
     TRANSFER,

@@ -3,22 +3,20 @@ package com.example.userservice.entity.accountTransaction;
 import com.example.userservice.common.exception.InsufficientFundsException;
 import com.example.userservice.entity.BankUser;
 import com.example.userservice.entity.UserAccount;
+import com.example.userservice.entity.accountTransaction.enums.AccountTransactionStatus;
+import com.example.userservice.entity.accountTransaction.enums.AccountTransactionType;
 import com.example.userservice.entity.userAccount.Enums.AccountType;
 import com.example.userservice.entity.userAccount.Enums.UserAccountStatus;
 import com.example.userservice.entity.userAccount.UserAccountRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.stereotype.Service;
 import com.example.userservice.entity.bankUser.BankUserService;
-
-import javax.naming.InsufficientResourcesException;
 import java.math.BigDecimal;
-import java.util.Optional;
+import java.time.OffsetDateTime;
+import java.util.UUID;
 
-@Getter
-@Setter
 @Service
 @AllArgsConstructor
 public class AccountTransactionService {
@@ -29,14 +27,10 @@ public class AccountTransactionService {
     /*  This is our main method, every other way of making a transaction (e.g. email or phone will be
         called in this method for safety */
 
-    private void transferAmountById(Long sponsorAccountId, Long recipientAccountId, BigDecimal amount) {
+    private AccountTransactionResponse transferAmountById(Long sponsorAccountId, Long recipientAccountId, BigDecimal amount, AccountTransactionType type) {
+
         UserAccount sponsorAccount = UserAccountService.findById(sponsorAccountId).orElseThrow(EntityNotFoundException::new);
         UserAccount recipientAccount = UserAccountService.findById(recipientAccountId).orElseThrow(EntityNotFoundException::new);
-
-
-        if (sponsorAccount == null || recipientAccount == null) {
-            throw new EntityNotFoundException("Sponsor User: " + sponsorAccountId + "& Recipient User: " +  recipientAccountId + "not found");
-        }
 
         if (sponsorAccount.getBalance().compareTo(amount) < 0) {
             throw new InsufficientFundsException("Not enough funds");
@@ -50,41 +44,73 @@ public class AccountTransactionService {
         sponsorAccount.setBalance(sponsorAccount.getBalance().subtract(amount));
         recipientAccount.setBalance(recipientAccount.getBalance().add(amount));
 
+        String referenceNumber = "MIKU-" + UUID.randomUUID().toString().replace("-", "").substring(0, 12).toUpperCase();
+
+        return AccountTransactionResponse.builder()
+                .transactionId(referenceNumber)
+                .sponsorAccountId(sponsorAccountId)
+                .amount(amount)
+                .recipientAccountId(recipientAccountId)
+                .type(type)
+                .timestamp(OffsetDateTime.now())
+                .status(AccountTransactionStatus.COMPLETE)
+                .build();
 
     }
 
-    // OTHER TRANSACTION METHODS
+    // Main public method for handling the incoming transaction from AccountTransactionService
 
-    private void transferAmountByEmail(Long sponsorID, String recipientEmail, BigDecimal amount) {
-        BankUser recipientUser = bankUserService.getUserByEmail(recipientEmail);
+    @Transactional
+    public AccountTransactionResponse transactionProcess(AccountTransactionRequest request) {
+        Long recipientAccountId;
 
-        if (recipientUser == null) {
-            throw new EntityNotFoundException("User " + recipientEmail + " not found");
+        if (request.getRecipientAccountId() != null) {
+            recipientAccountId = request.getRecipientAccountId();
+        } else if (request.getRecipientEmail() != null && !request.getRecipientEmail().isBlank()) {
+            recipientAccountId = getRecipientAccountIdByEmail(request.getRecipientEmail(), request.getAccountType());
+        } else if (request.getRecipientNumber() != null && !request.getRecipientNumber().isBlank()) {
+            recipientAccountId = getRecipientAccountIdByPhone(request.getRecipientNumber(), request.getAccountType());
+        } else {
+            throw new IllegalArgumentException("A recipient account ID, email, or phone number must be provided.");
         }
 
-        Long recipientId = recipientUser.getId();
-
-        transferAmountById(sponsorID, recipientId, amount);
+        return transferAmountById(request.getSponsorId(), recipientAccountId, request.getAmount(), request.getType());
     }
 
-    private void transferAmountbyPhone(Long sponsorAccountId, String number, BigDecimal amount) {
-        BankUser recipientUser = bankUserService.getUserByPhone(number);
+    private Long getRecipientAccountIdByEmail(String recipientEmail, AccountType targetType) {
+        BankUser user = bankUserService.getUserByEmail(recipientEmail);
 
-        if (recipientUser == null) {
-            throw new EntityNotFoundException("User with phone " + number + " not found");
+        if (user == null) {
+            throw new EntityNotFoundException("Recipient user with email " + recipientEmail + " not found");
         }
 
-        UserAccount recipientWallet = recipientUser.getUserAccounts().stream()
-                        .filter(userAccount -> userAccount.getType() == AccountType.CHECKING
-                            && userAccount.getStatus() == UserAccountStatus.ACTIVE)
-                        .findFirst()
-                        .orElseThrow(() -> new EntityNotFoundException("User with phone " + number + " not found"));
+        AccountType selectedType = (targetType != null) ? targetType : AccountType.CHECKING;
 
-        Long recipientWalletId = recipientWallet.getId();
+        UserAccount userAccountType = user.getUserAccounts().stream()
+                .filter(acc -> acc.getType() == selectedType && acc.getStatus() == UserAccountStatus.ACTIVE)
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("Sponsor User: " + recipientEmail + "not found"));
 
-        transferAmountById(sponsorAccountId, recipientWalletId, amount);
 
+        return userAccountType.getId();
     }
 
+    private Long getRecipientAccountIdByPhone(String recipientPhone, AccountType targetType) {
+        BankUser user = bankUserService.getUserByPhone(recipientPhone);
+
+        if (user == null) {
+            throw new EntityNotFoundException("Recipient user with phone " + recipientPhone + " not found");
+        }
+
+        AccountType selectedType = (targetType != null) ? targetType : AccountType.CHECKING;
+
+        UserAccount userAccountType = user.getUserAccounts().stream()
+                .filter(acc -> acc.getType() == selectedType && acc.getStatus() == UserAccountStatus.ACTIVE)
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("Sponsor User: " + recipientPhone + "not found"));
+
+
+        return userAccountType.getId();
+    }
 
 }
