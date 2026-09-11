@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: ${APPLICATION_NAME}
+
+  # Spring Data Config (Replace URL with env ${DB_URL} )
+  datasource:
+    url: ${DB_URL}    # 'jdbc:postgresql://localhost:5432/postgres'
+    username: ${DB_USER}  # postgres
+    password: ${DB_PASSWORD}
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: ${SQL_DIALECT}
+
+    hibernate:
+      ddl-auto: update
+
+    show-sql: true
+
+springdoc:
+  swagger-ui:
+    path: '${APPLICATION_NAME}/swagger-ui.html'

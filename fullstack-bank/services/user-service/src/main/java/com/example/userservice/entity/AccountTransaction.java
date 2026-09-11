@@ -45,7 +45,7 @@ public class AccountTransaction {
     @Column(name = "creation_ts", nullable = false)
     private OffsetDateTime creationTs;
 
-    private String referenceNumber;
+//    private String referenceNumber;
 
-    String referenceNumber = "MIKU-" + UUID.randomUUID().toString().substring(0,12).toUpperCase();
+    private String referenceNumber = "MIKU-" + UUID.randomUUID().toString().substring(0,12).toUpperCase();
 }
