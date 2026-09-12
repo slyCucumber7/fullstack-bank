@@ -22,15 +22,14 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
 
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user-service/users", "/user-login/login").permitAll() // Endpoints permitted to all
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/user-service/**").hasRole("USER") // Endpoints permitted to who has the role "USER"
-                        .requestMatchers("/user-service/swagger-ui.html").permitAll()
                         .anyRequest().authenticated()
-                )
-
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
+                );
         return http.build();
     }
 }

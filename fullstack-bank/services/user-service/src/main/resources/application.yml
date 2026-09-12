@@ -23,10 +23,13 @@ spring:
 # Swagger UI Config
 springdoc:
   swagger-ui:
-    path: '${spring.application.name}/swagger-ui.html'
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+    version: openapi-3-1
 
 # Server Config
 server:
   port: 8080
   servlet:
-    context-path: '/${spring.application.name}'
+    context-path: /${spring.application.name}

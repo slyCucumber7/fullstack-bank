@@ -13,14 +13,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Collections;
 
 @Component
-public class JWTAuthFilter extends OncePerRequestFilter {
+public class JWTAuthFilter extends PathExclusionFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -41,11 +40,6 @@ public class JWTAuthFilter extends OncePerRequestFilter {
             }
         }
 
-        // This condition assumes that the user is logging in/registering
-        if (jwt == null || jwt.isEmpty()) {
-            filterChain.doFilter(request, response);
-            return;
-        }
         
         try {
             DecodedJWT decodedJWT = JWT.decode(jwt);
