@@ -62,7 +62,7 @@ public class BankUser {
     @Column(name = "addr_zip", nullable = false, length = 9)
     private String addrZip;
 
-    @Size(min = 10, max = 10, message = "Phone number must be exactly 10 digits")
+    @Size(min = 10, max = 15)
     @NotNull
     @Column(name = "phone", nullable = false, length = 15)
     private String phone;

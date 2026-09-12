@@ -1,13 +1,15 @@
 spring:
   application:
-    name: ${APPLICATION_NAME}
+    name: 'user-service'
+    version: @project.version@
 
-  # Spring Data Config (Replace URL with env ${DB_URL} )
+  # Spring Data Config
   datasource:
-    url: ${DB_URL}    # 'jdbc:postgresql://localhost:5432/postgres'
-    username: ${DB_USER}  # postgres
+    url: ${DB_URL}
+    username: ${DB_USER}
     password: ${DB_PASSWORD}
 
+  # ORM Config
   jpa:
     properties:
       hibernate:
@@ -18,6 +20,13 @@ spring:
 
     show-sql: true
 
+# Swagger UI Config
 springdoc:
   swagger-ui:
-    path: '${APPLICATION_NAME}/swagger-ui.html'
+    path: '${spring.application.name}/swagger-ui.html'
+
+# Server Config
+server:
+  port: 8080
+  servlet:
+    context-path: '/${spring.application.name}'

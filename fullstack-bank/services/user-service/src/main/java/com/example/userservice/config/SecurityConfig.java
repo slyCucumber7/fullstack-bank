@@ -11,10 +11,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JWTAuth jwtAuth;
+    private final JWTAuthFilter jwtAuthFilter;
 
-    public SecurityConfig(JWTAuth jwtAuth) {
-        this.jwtAuth = jwtAuth;
+    public SecurityConfig(JWTAuthFilter jwtAuthFilter) {
+        this.jwtAuthFilter = jwtAuthFilter;
     }
 
     @Bean
@@ -25,10 +25,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user-service/users", "/user-login/login").permitAll() // Endpoints permitted to all
                         .requestMatchers("/user-service/**").hasRole("USER") // Endpoints permitted to who has the role "USER"
+                        .requestMatchers("/user-service/swagger-ui.html").permitAll()
                         .anyRequest().authenticated()
                 )
 
-                .addFilterBefore(jwtAuth, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

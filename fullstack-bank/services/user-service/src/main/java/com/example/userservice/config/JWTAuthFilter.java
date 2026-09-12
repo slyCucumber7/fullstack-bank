@@ -17,16 +17,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Collections;
 
 @Component
-public class JWTAuth extends OncePerRequestFilter {
+public class JWTAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         System.out.println("\n========================================");
-        System.out.println("HIT FILTER FOR PATH: " + request.getRequestURI());
+        System.out.println("REQUEST TO CONTEXT PATH: " + request.getRequestURI() + " INTERCEPTED BY JWT AUTH FILTER");
 
         Cookie[] cookies = request.getCookies();
 
