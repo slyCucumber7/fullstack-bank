@@ -1,5 +1,5 @@
 # Overview
-This app contains endpoints for
+This app contains endpoints for:
 - Managing user profiles
 - Signing up and logging in
 - Creating transactions
