@@ -5,4 +5,4 @@ This app contains endpoints for
 - Creating transactions
 
 ## Useful Links
-- [Swagger UI - LocalHost]([Swagger UI](http://localhost:8080/user-service/swagger-ui/index.html#/))
+- [Swagger UI - LocalHost](http://localhost:8080/user-service/swagger-ui/index.html#/)
