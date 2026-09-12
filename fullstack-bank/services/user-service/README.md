@@ -6,3 +6,4 @@ This app contains endpoints for
 
 ## Useful Links
 - [Swagger UI - LocalHost](http://localhost:8080/user-service/swagger-ui/index.html#/)
+- [Remote Git Repository](https://github.com/slyCucumber7/fullstack-bank)
