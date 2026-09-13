@@ -1,5 +1,6 @@
-package com.example.userservice.entity;
+package com.example.userservice.entity.userLogin;
 
+import com.example.userservice.entity.bankUser.BankUser;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

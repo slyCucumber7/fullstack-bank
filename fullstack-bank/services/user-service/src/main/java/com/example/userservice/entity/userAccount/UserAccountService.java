@@ -1,8 +1,7 @@
 package com.example.userservice.entity.userAccount;
 
 
-import com.example.userservice.entity.BankUser;
-import com.example.userservice.entity.UserAccount;
+import com.example.userservice.entity.bankUser.BankUser;
 import com.example.userservice.entity.userAccount.Enums.AccountType;
 import com.example.userservice.entity.userAccount.Enums.UserAccountStatus;
 import jakarta.transaction.Transactional;

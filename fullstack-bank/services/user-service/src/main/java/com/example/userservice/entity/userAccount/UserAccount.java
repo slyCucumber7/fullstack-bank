@@ -1,5 +1,6 @@
-package com.example.userservice.entity;
+package com.example.userservice.entity.userAccount;
 
+import com.example.userservice.entity.bankUser.BankUser;
 import com.example.userservice.entity.userAccount.Enums.AccountType;
 import com.example.userservice.entity.userAccount.Enums.UserAccountStatus;
 import jakarta.persistence.*;
@@ -10,7 +11,6 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 @Getter
 @Setter

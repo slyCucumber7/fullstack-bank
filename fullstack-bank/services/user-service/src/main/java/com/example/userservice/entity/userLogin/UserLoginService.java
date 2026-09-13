@@ -1,6 +1,5 @@
 package com.example.userservice.entity.userLogin;
 
-import com.example.userservice.entity.UserLogin;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

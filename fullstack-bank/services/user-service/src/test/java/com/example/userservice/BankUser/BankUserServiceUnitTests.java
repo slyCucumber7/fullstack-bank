@@ -1,7 +1,7 @@
 package com.example.userservice.BankUser;
 
 import com.example.userservice.common.exception.NotFoundException;
-import com.example.userservice.entity.BankUser;
+import com.example.userservice.entity.bankUser.BankUser;
 import com.example.userservice.entity.bankUser.BankUserDto;
 import com.example.userservice.entity.bankUser.BankUserRepository;
 import com.example.userservice.entity.bankUser.BankUserRequest;

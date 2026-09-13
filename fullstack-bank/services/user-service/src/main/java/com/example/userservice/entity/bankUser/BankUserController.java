@@ -1,8 +1,7 @@
 package com.example.userservice.entity.bankUser;
 
 import com.example.userservice.common.ResponseWrapper;
-import com.example.userservice.entity.BankUser;
-import com.example.userservice.entity.UserLogin;
+import com.example.userservice.entity.userLogin.UserLogin;
 import com.example.userservice.entity.userAccount.UserAccountService;
 import com.example.userservice.entity.userLogin.UserLoginService;
 import lombok.AllArgsConstructor;

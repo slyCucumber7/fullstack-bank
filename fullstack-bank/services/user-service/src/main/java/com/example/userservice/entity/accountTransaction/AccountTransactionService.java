@@ -1,8 +1,8 @@
 package com.example.userservice.entity.accountTransaction;
 
 import com.example.userservice.common.exception.InsufficientFundsException;
-import com.example.userservice.entity.BankUser;
-import com.example.userservice.entity.UserAccount;
+import com.example.userservice.entity.bankUser.BankUser;
+import com.example.userservice.entity.userAccount.UserAccount;
 import com.example.userservice.entity.accountTransaction.enums.AccountTransactionStatus;
 import com.example.userservice.entity.accountTransaction.enums.AccountTransactionType;
 import com.example.userservice.entity.userAccount.Enums.AccountType;

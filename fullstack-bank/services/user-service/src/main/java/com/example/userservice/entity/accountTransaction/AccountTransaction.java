@@ -1,5 +1,6 @@
-package com.example.userservice.entity;
+package com.example.userservice.entity.accountTransaction;
 
+import com.example.userservice.entity.userAccount.UserAccount;
 import com.example.userservice.entity.accountTransaction.enums.AccountTransactionType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

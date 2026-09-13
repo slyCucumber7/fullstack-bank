@@ -1,14 +1,13 @@
 package com.example.userservice.config;
 
 
-import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,7 +18,10 @@ import java.time.Instant;
 import java.util.Collections;
 
 @Component
+@RequiredArgsConstructor
 public class JWTAuthFilter extends PathExclusionFilter {
+
+    private JwtService jwtService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -42,7 +44,15 @@ public class JWTAuthFilter extends PathExclusionFilter {
 
         
         try {
-            DecodedJWT decodedJWT = JWT.decode(jwt);
+
+             /*
+                TODO: Verify that the JWT is actually valid!!!
+             */
+
+            var decodedJWT = jwtService.validateToken(jwt);
+
+
+
 
             if (decodedJWT.getExpiresAt().toInstant().isBefore(Instant.now())) {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED);

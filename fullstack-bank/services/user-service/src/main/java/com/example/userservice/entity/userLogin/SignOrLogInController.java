@@ -9,7 +9,6 @@ import com.example.userservice.common.JwtResponse;
 import com.example.userservice.common.ResponseWrapper;
 import com.example.userservice.common.exception.FailedLoginException;
 import com.example.userservice.common.exception.NotFoundException;
-import com.example.userservice.entity.UserLogin;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -48,6 +47,10 @@ public class SignOrLogInController {
 
             Instant now = Instant.now();
             Instant expirationTime = now.plusSeconds(6700);
+
+            /*
+                TODO: add user claim, register it as role in security context, secure endpoints
+             */
 
             String jwtToken = JWT.create()
                     .withIssuer("Miku Bank Inc.")

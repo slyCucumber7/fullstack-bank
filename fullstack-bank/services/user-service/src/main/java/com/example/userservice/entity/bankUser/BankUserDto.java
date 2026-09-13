@@ -1,6 +1,5 @@
 package com.example.userservice.entity.bankUser;
 
-import com.example.userservice.entity.BankUser;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
