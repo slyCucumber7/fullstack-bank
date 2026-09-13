@@ -28,8 +28,8 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user-service/users", "/user-login/login").permitAll() // Endpoints permitted to all
-                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/test/**").permitAll()
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll() // TODO: INHERIT LIST FROM PROPERTY FILE!!!
+                        .requestMatchers("/test/**").permitAll() // TODO: REMOVE THIS!!!!!!!!
                         .requestMatchers("/user-service/**").hasRole("USER") // Endpoints permitted to who has the role "USER"
                         .anyRequest().authenticated()
                 );
