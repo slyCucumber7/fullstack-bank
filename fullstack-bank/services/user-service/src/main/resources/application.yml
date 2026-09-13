@@ -34,5 +34,7 @@ server:
   servlet:
     context-path: /${spring.application.name}
 
-jwt-secret: '12345'
+# Custom Auth Token Config
+jwt-secret: 'a-string-secret-at-least-256-bits-pineapplexdf'
 jwt-issuer: 'MIKU-BANK.COM'
+jwt-expiration-milis: 180000

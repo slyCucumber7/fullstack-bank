@@ -1,11 +1,11 @@
 package com.example.userservice.BankUser;
 
 import com.example.userservice.common.exception.NotFoundException;
-import com.example.userservice.entity.bankUser.BankUser;
-import com.example.userservice.entity.bankUser.BankUserDto;
-import com.example.userservice.entity.bankUser.BankUserRepository;
-import com.example.userservice.entity.bankUser.BankUserRequest;
-import com.example.userservice.entity.bankUser.BankUserService;
+import com.example.userservice.domain.bankUser.BankUser;
+import com.example.userservice.domain.bankUser.BankUserDto;
+import com.example.userservice.domain.bankUser.BankUserRepository;
+import com.example.userservice.domain.bankUser.BankUserRequest;
+import com.example.userservice.domain.bankUser.BankUserService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

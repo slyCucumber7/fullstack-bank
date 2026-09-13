@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private ResponseEntity<ErrorResponse> buildResponse(RuntimeException ex, HttpStatus httpStatus, String errorName, HttpServletRequest request){
+    private ResponseEntity<ErrorResponse> buildResponse(Exception ex, HttpStatus httpStatus, String errorName, HttpServletRequest request){
         ErrorResponse response = new ErrorResponse(LocalDateTime.now(), httpStatus.value(), errorName, ex.getMessage(), request.getRequestURI());
         return ResponseEntity.status(httpStatus).body(response);
     }
@@ -35,6 +35,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleInsufficientFunds(InsufficientFundsException ex, HttpServletRequest request){
         return buildResponse(ex, HttpStatus.UNPROCESSABLE_CONTENT, "Insufficient Funds", request);
     }
+
 
 
 }
